@@ -1,0 +1,8 @@
+{
+  "name": "genesis11-babel-and-abram",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Code-rendered lyric film of Babel and Abram (Genesis 11)",
+  "license": "MIT"
+}

@@ -1,0 +1,132 @@
+{
+ "fps": 60,
+ "tier": "ultra",
+ "samples": 16,
+ "title": "Babel and Abram - Genesis 11",
+ "scenes": [
+  {
+   "id": "00",
+   "scene": "s00-one-breath",
+   "from": 0,
+   "to": 27.89,
+   "hold": "the title and the four opening words over the long instrumental: one breath of wind crossing one still plain, in one take"
+  },
+  {
+   "id": "01",
+   "scene": "s01-brickfield",
+   "from": 27.89,
+   "to": 50.1,
+   "hold": "one walk along the drying bricks to the kilns: the verse is one morning's work"
+  },
+  {
+   "id": "02",
+   "scene": "s02-kiln",
+   "from": 50.1,
+   "to": 56.9
+  },
+  {
+   "id": "03",
+   "scene": "s03-ramp",
+   "from": 56.9,
+   "to": 84.4,
+   "hold": "one climb up the tower's ramp for the whole chorus"
+  },
+  {
+   "id": "04",
+   "scene": "s04-wall",
+   "from": 84.4,
+   "to": 98.91,
+   "hold": "one track along the wall as it rises course by course"
+  },
+  {
+   "id": "05",
+   "scene": "s05-terraces",
+   "from": 98.91,
+   "to": 126.68,
+   "hold": "one crane up the tower's face, a terrace per line, into the cloud"
+  },
+  {
+   "id": "06",
+   "scene": "s06-came-down",
+   "from": 126.68,
+   "to": 146.66,
+   "hold": "the silence and the descent of the light are one held moment"
+  },
+  {
+   "id": "07",
+   "scene": "s07-cloud",
+   "from": 146.66,
+   "to": 176.43,
+   "hold": "one slow descent through the storm cloud while the words are spoken"
+  },
+  {
+   "id": "08",
+   "scene": "s08-confusion",
+   "from": 176.43,
+   "to": 190.09,
+   "hold": "one move back from the wall as the words break and the storm takes them"
+  },
+  {
+   "id": "09",
+   "scene": "s09-left-off",
+   "from": 190.09,
+   "to": 207.08,
+   "hold": "one walk through the abandoned site after the storm"
+  },
+  {
+   "id": "10",
+   "scene": "s10-river-names",
+   "from": 207.08,
+   "to": 223.16,
+   "hold": "one glide upstream past the first camps"
+  },
+  {
+   "id": "11",
+   "scene": "s11-days-shorter",
+   "from": 223.16,
+   "to": 245.45,
+   "hold": "one accelerating glide upstream as the days run faster"
+  },
+  {
+   "id": "12",
+   "scene": "s12-ashes",
+   "from": 245.45,
+   "to": 257.76,
+   "hold": "one move from the dawn ridge to the ash and back"
+  },
+  {
+   "id": "13",
+   "scene": "s13-ur-lamps",
+   "from": 257.76,
+   "to": 272.43,
+   "hold": "one drift along the river bank at Ur"
+  },
+  {
+   "id": "14",
+   "scene": "s14-out-of-ur",
+   "from": 272.43,
+   "to": 288.94,
+   "hold": "one walk along the tracks leaving Ur"
+  },
+  {
+   "id": "15",
+   "scene": "s15-road-open",
+   "from": 288.94,
+   "to": 297.17
+  },
+  {
+   "id": "16",
+   "scene": "s16-haran",
+   "from": 297.17,
+   "to": 307.44,
+   "hold": "one move past the well to the cairn"
+  },
+  {
+   "id": "17",
+   "scene": "s17-road-ahead",
+   "from": 307.44,
+   "to": 332.84,
+   "hold": "the last line and the end title over the long outro: one rise over the road going on"
+  }
+ ]
+}
