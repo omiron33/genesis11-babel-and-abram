@@ -30,8 +30,10 @@ export default (P) => {
   const keys = [{ t: P.from, pos: [22, tierY1(0) - 6, hwAt(0, 20) + 52], look: [0, tierY1(0) - 3, hwAt(0, 20)] }];
   L.forEach((l, k) => {
     const m = mid(k), tm = (l.start + l.end) / 2;
-    const far = k < 5 ? 46 - 1.5 * k : 30;
-    keys.push({ t: tm, pos: [m[0] + far * 0.5, m[1] + 2, m[2] + far], look: m });
+    const far = k < 5 ? 33 - k : 25;
+    // hold on each band from just after it begins until just after it ends, then crane on
+    const at = (t, dy) => ({ t, pos: [m[0] + far * 0.22, m[1] + 1.5 + dy, m[2] + far], look: [m[0], m[1] + dy * 0.5, m[2]] });
+    keys.push(at(Math.min(l.start + 0.3, tm), -0.4), at(Math.max(l.end + 0.3, tm), 0.4));
   });
   keys.push({ t: P.to, pos: [mid(7)[0] + 13, mid(7)[1] + 4.5, mid(7)[2] + 27], look: [mid(7)[0] + 2, mid(7)[1] + 5, mid(7)[2]] });
   const cam = track(keys, { handheld: { amount: 1.2, seed: 55, metres: 2 }, fov: 46 });

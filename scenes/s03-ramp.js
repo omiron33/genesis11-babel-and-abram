@@ -36,9 +36,9 @@ export default (P) => {
   const keys = [{ t: P.from, pos: [36, RY(36) + 1.7, ZW(RY(36)) + 6.0], look: [24, RY(24) + 1.4, ZW(RY(24)) + 1] }];
   L.forEach((l, k) => {
     const sl = slots[k], cx = (sl.x0 + sl.x1) / 2;
-    const at = (x, t) => ({ t, pos: [x, RY(x) + 1.7, ZW(RY(x)) + 4.3], look: [cx, RY(cx) + 1.45, ZW(RY(cx))] });
-    keys.push(at(sl.x1 + 3.2, l.start));
-    keys.push(at(sl.x1 + 1.4, l.end + 0.3));
+    const at = (x, t) => ({ t, pos: [x, RY(x) + 1.7, ZW(RY(x)) + 5.5], look: [cx, RY(cx) + 1.45, ZW(RY(cx))] });
+    keys.push(at(cx + 3.0, l.start));
+    keys.push(at(cx + 0.8, l.end + 0.3));
   });
   keys.push({ t: P.to, pos: [slots[7].x0 + 2, RY(slots[7].x0 + 2) + 1.9, ZW(RY(slots[7].x0)) + 6.5], look: [slots[7].x0 - 20, RY(slots[7].x0) + 12, 0] });
   const cam = track(keys, { handheld: { amount: 1.0, seed: 33 }, fov: 58 });

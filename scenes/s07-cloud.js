@@ -9,7 +9,7 @@
 // the cloud's underside ahead.
 import lyrics from '/timing.js';
 import { track } from '/song/lib/cam.js';
-import { towerScene } from '/song/lib/x-tower.js';
+import { towerScene } from '/song/lib/x-tower-cloud.js';
 import { skyMix, grade, FINISH } from '/song/lib/look.js';
 import { inscribe, anchorAt } from '/song/lib/type.js';
 export const kind = 'shader';

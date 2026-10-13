@@ -23,14 +23,14 @@ export default (P) => {
   const LEN = [6.8, 5.0, 5.0, 5.0];
   let prevB = -1e9;
   // each line, wrapped on two rows, centred about six metres ahead of the camera in the middle of its line
-  const span = L.map((l, k) => { const za = Math.max(camZ((l.start + l.end) / 2) + 6.2 - LEN[k] / 2, prevB + 0.6); prevB = za + LEN[k]; return [za, za + LEN[k]]; });
+  const span = L.map((l, k) => { const za = Math.max(camZ((l.start + l.end) / 2) + (k === 0 ? 7.6 : 6.2) - LEN[k] / 2, prevB + 0.6); prevB = za + LEN[k]; return [za, za + LEN[k]]; });
   const keys = [];
   for (let t = P.from; t <= P.to + 0.01; t += 1.0) {
     const z = camZ(t);
     // looking at the line being sung (its middle), else along the bank ahead
     const k = L.findIndex((l) => t < l.end + 0.6);
     const lz = k >= 0 ? (span[k][0] + span[k][1]) / 2 : z + 4.5;
-    keys.push({ t, pos: [bankX(z) + 5.6 + 0.3 * Math.sin(t * 0.3), 1.6, z], look: [bankX(lz) + 0.2, 0.8, lz] });
+    keys.push({ t, pos: [bankX(z) + 6.6 + 0.3 * Math.sin(t * 0.3), 1.6, z], look: [bankX(lz) + 0.2, 0.8, lz] });
   }
   const cam = track(keys, { handheld: { amount: 0.8, seed: 101 }, fov: 50 });
   const campU = new Array(24).fill(0); camps.forEach((z, k) => { campU[k * 2] = z; campU[k * 2 + 1] = 1; });

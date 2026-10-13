@@ -21,7 +21,7 @@ export default (P) => {
   const xR = BF.x0 + I0 * BRICK.cx, xL = BF.x0 + (I0 + PER) * BRICK.cx;   // screen-left edge is +x
   const xc = (xL + xR) / 2;
   // brick rows (j) carrying each line: two rows per line, in singing order up the field
-  const J = [[12, 13], [23, 24], [33, 34], [42, 43]];
+  const J = [[12, 13], [23, 24], [33, 34], [37, 38]];
   const rowZ = (j) => BF.z0 + j * BRICK.cz;
   const strips = J.flat().map(rowZ);
   // split each line's words over its two rows
@@ -31,11 +31,11 @@ export default (P) => {
   const near = (k) => rowZ(J[k][0]);
   const keys = [{ t: P.from, pos: [xc + 0.7, 1.75, near(0) - 7.0], look: [xc + 0.3, 0, near(0) - 1.5] }];
   L.forEach((l, k) => {
-    keys.push({ t: l.start, pos: [xc + 0.3 - 0.12 * k, 2.7, near(k) - 3.0], look: [xc + 0.1, 0, near(k) + 0.45] });
-    keys.push({ t: l.end + 0.15, pos: [xc + 0.15 - 0.12 * k, 2.6, near(k) - 2.4], look: [xc, 0, near(k) + 0.6] });
+    keys.push({ t: l.start, pos: [xc + 0.3 - 0.12 * k, 2.35, near(k) - 2.3], look: [xc + 0.1, 0, near(k) + 0.4] });
+    keys.push({ t: l.end + 0.15, pos: [xc + 0.15 - 0.12 * k, 2.25, near(k) - 1.9], look: [xc, 0, near(k) + 0.5] });
   });
   keys.push({ t: P.to, pos: [xc - 0.4, 1.85, near(3) - 0.2], look: [xc - 0.6, 1.0, 40] });
-  const cam = track(keys, { handheld: { amount: 0.8, seed: 21 }, fov: 50, endSpeed: 0.5 });
+  const cam = track(keys, { handheld: { amount: 0.8, seed: 21 }, fov: 46, endSpeed: 0.5 });
   const SW = 4096, SH = Math.round(SW * BRICK.cz / (PER * BRICK.cx)) * strips.length;
   return plainScene(P, {
     name: 's01-brickfield', cam,
@@ -55,7 +55,7 @@ export default (P) => {
         ws.forEach((w, i) => {
           const g = ignite(w, t, { lead: 0.02, rise: 0.09 });
           if (g.a <= 0.001) return;
-          const fill = clamp01((t - w.start - 0.12) / 0.45);
+          const fill = clamp01((t - w.start + 0.05) / 0.2);
           let size = 260;
           ctx.font = FONTS.name(size);
           const tw = ctx.measureText(w.w).width;

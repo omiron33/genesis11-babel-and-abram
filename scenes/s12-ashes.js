@@ -34,7 +34,7 @@ export default (P) => {
     name: 's12-ashes', cam,
     textSize: [4096, 4096],
     sky: (t) => {
-      const k = smooth(clamp01((t - P.from) / 2.0));
+      const k = smooth(clamp01((t - P.from + 0.1) / 1.0));
       return { ...skyMix('predawn', 'sunrise', 0.4 + 0.6 * k), uSunDir: [0.12, 0.04 + 0.05 * k, -0.99], uSunCol: [3.2 * k + 0.2, 1.8 * k + 0.12, 0.9 * k + 0.08], uFogDen: 0.0014, uFogCol: [0.45, 0.36, 0.3] };
     },
     uniforms: {
@@ -44,7 +44,7 @@ export default (P) => {
     },
     update(t, u) {
       // the light comes down the face: the shadow line falls from the ridge top to its foot
-      u.uSunLine.value = 60 - 70 * smooth(clamp01((t - (P.from + 0.1)) / 0.9));
+      u.uSunLine.value = 60 - 70 * smooth(clamp01((t - (P.from - 0.05)) / 0.4));
     },
     drawText(ctx, t) {
       const H = ctx.canvas.height / rows;

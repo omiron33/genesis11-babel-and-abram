@@ -7,7 +7,7 @@
 // horizon, and the camera rises after it.
 import lyrics from '/timing.js';
 import { track } from '/song/lib/cam.js';
-import { plainScene } from '/song/lib/x-plain.js';
+import { plainScene } from '/song/lib/x-plain-wet.js';
 import { skyMix, grade, FINISH, smooth, clamp01 } from '/song/lib/look.js';
 import { inscribe, anchorAt, region, title } from '/song/lib/type.js';
 export const kind = 'shader';
@@ -33,7 +33,7 @@ export default (P) => {
   const keys = [{ t: 0, pos: [X + 0.3, 2.2, camZ(0)], look: [X + 3, 2.5, camZ(0) + 120] }, at(4.2, 2.4, 6.4, 0.1), at(10, 2.45, 6.0, -0.1), at(L[3].start + 0.9, 2.5, 6.2, -0.2)];
   keys.push({ t: 20.5, pos: [X - 0.5, 4.0, camZ(20.5) + 1.5], look: [X + 2, 1.5, camZ(20.5) + 60] });
   keys.push({ t: P.to, pos: [X - 1.0, 7.5, camZ(P.to) + 6], look: [X + 12, 25, camZ(P.to) + 600] });
-  const cam = track(keys, { handheld: { amount: 0.7, seed: 11 }, fov: 50 });
+  const cam = track(keys, { handheld: { amount: 0.35, seed: 11 }, fov: 50 });
   return plainScene(P, {
     name: 's00-one-breath', cam,
     textSize: [2048, 2400],

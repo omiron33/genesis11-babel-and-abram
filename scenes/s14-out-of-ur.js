@@ -18,10 +18,10 @@ export default (P) => {
   const L = A.lines;
   const camZ = (t) => -150 + (t - P.from) * 1.45;
   // each line pressed beside the tracks (the road's -x side, read from the road looking west)
-  const zL = L.map((l) => camZ(l.end) + 6.0);
+  const zL = L.map((l) => camZ(l.end) + 5.0);
   const side = [1, 1, -1, 1];
   // each line lies across the road, the tracks running through it
-  const rect = (k) => { const z = zL[k], x = roadX(z); return [x + 10.4, z - 1.3, x + 1.9, z + 1.3]; };
+  const rect = (k) => { const z = zL[k], x = roadX(z); return [x + 10.4, z - 1.6, x + 1.9, z + 1.6]; };
   const decal = new Array(16).fill(0), decalUV = new Array(16).fill(0);
   L.forEach((l, k) => {
     const r = rect(k);
@@ -37,9 +37,10 @@ export default (P) => {
     const k = L.findIndex((l) => t < l.end + 0.4);
     const kk = k < 0 ? 3 : k;
     const lookAt = back ? [roadX(zL[2]) - 1.5, 0.3, zL[2] - 2.0] : [roadX(zL[kk]) + 4.4, 0.2, zL[kk] + 1.0];
-    keys.push({ t, pos: [x + 0.6, back ? 2.6 : 2.1, z], look: lookAt });
+    keys.push({ t, pos: [x + 0.9, back ? 2.6 : 3.3, z], look: lookAt });
   }
-  keys.push({ t: P.to + 0.6, pos: [roadX(camZ(P.to)) + 0.4, 1.9, camZ(P.to) + 0.8], look: [roadX(camZ(P.to) + 60), 1.5, camZ(P.to) + 300] });
+  // the last line stays in frame to the cut, the walkers on the rise beyond it
+  keys.push({ t: P.to + 0.6, pos: [roadX(camZ(P.to)) + 1.1, 3.1, camZ(P.to) + 0.8], look: [roadX(zL[3]) + 3.6, 0.4, zL[3] + 4.0] });
   const cam = track(keys, { handheld: { amount: 0.9, seed: 141 }, fov: 52 });
   return desertScene(P, {
     name: 's14-out-of-ur', cam,
@@ -48,12 +49,12 @@ export default (P) => {
     uniforms: {
       uDecal: decal, uDecalUV: decalUV, uDecalKind: [2, 2, 2, 2],
       uTracks: [-1000, 1000, 1e4, 1], uBrick: [bx, bz, 0.6, 1],
-      uTowerFar: [-60, -1250, 1.5, 0], uCaravan: [roadX(170) + 2, 120, 0, 1], uWindD: 0.5,
+      uTowerFar: [-60, -1250, 1.5, 0], uCaravan: [roadX(-70) - 1.5, -40, 0, 1], uWindD: 0.5,
     },
     update(t, u) { u.uCaravan.value[2] = (t - P.from) * 1.1; },
     drawText(ctx, t) {
-      L.forEach((l, k) => region(ctx, [0, 1 - (k + 1) / 4, 1, 1 - k / 4], 8.5, 2.6, (c, b) =>
-        inscribe(c, t, wrap([l], 30), { x: 40, y: 0, w: b.w - 80, h: b.h }, { size: Math.round(b.h * 0.36), leading: 1.15, valign: 'middle', font: 'name' })));
+      L.forEach((l, k) => region(ctx, [0, 1 - (k + 1) / 4, 1, 1 - k / 4], 8.5, 3.2, (c, b) =>
+        inscribe(c, t, wrap([l], 30), { x: 40, y: 0, w: b.w - 80, h: b.h }, { size: Math.round(b.h * 0.34), leading: 1.3, valign: 'middle', font: 'caps', tracking: 0.04 })));
     },
     post: () => grade({ exposure: 1.0, bloom: 0.1 }),
     finish: () => FINISH,
