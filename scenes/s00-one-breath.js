@@ -38,7 +38,7 @@ export default (P) => {
     name: 's00-one-breath', cam,
     textSize: [2048, 2400],
     sky: (t) => ({ ...skyMix('predawn', 'sunrise', 0.45 + 0.4 * smooth(t / 28)), uSunDir: [0.62, 0.02 + 0.035 * t / 28, 0.78], uFogDen: 0.0016 }),
-    uniforms: { uDecal: [...decal], uDecalUV: decalUV, uDecalKind: [1, 1, 1, 1], uTower: [70, 1350, 1, 0], uBricks: 0, uWind: 1.0, uFogDen: 0.0016 },
+    uniforms: { uDecal: [...decal], uDecalUV: decalUV, uDecalKind: [1, 1, 1, 1], uTower: [70, 1350, 1, 0], uReeds: 0, uBricks: 0, uWind: 1.0, uFogDen: 0.0016 },
     update(t, u) {
       // the breath: a front just behind the camera at the start, keeping a little ahead of it, then
       // running on fast across the plain after "one breath"

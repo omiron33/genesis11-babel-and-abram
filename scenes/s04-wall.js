@@ -3,7 +3,7 @@
 // heaven / We could climb to from here"
 // Night at the foot of the tower. The camera comes down the face of the tower's lowest stage to a new
 // wall going up in front of it, and tracks along that wall as it rises band by band: each line is
-// stamped into the course being laid, pitch-black in the brick, as it is sung, the bricks of that
+// burned into the course being laid as it is sung, the letters white-hot then settling to living ember, the bricks of that
 // course landing one after another along the wall with a puff of dust. A fire pit by the work lights
 // it; the tower's braziers burn above.
 import lyrics from '/timing.js';
@@ -38,7 +38,7 @@ void extraShade(vec3 p, inout vec3 n, out vec3 alb, inout vec3 emit, inout float
   float h = b.y;
   // new bricks, freshly fired: cleaner and warmer than the tower's
   vec3 bc = mix(vec3(0.5, 0.36, 0.24), vec3(0.6, 0.45, 0.3), h) * (0.8 + 0.35 * fbm(vec2(p.x * 7.0, p.y * 16.0) + h * 30.0, 3));
-  alb = mix(bc, vec3(0.45, 0.4, 0.33), b.x * 0.85);
+  alb = mix(bc, vec3(0.45, 0.4, 0.33), b.x * 0.85) * 0.6;       // in the night, by a low fire
   if (p.y < 0.3 && length(p.xz - vec2(3.2, ${F(ZF + 2.6)})) < 0.9) alb = vec3(0.12, 0.1, 0.09);
   // the words, stamped in the face of each band and filled with pitch
   if (n.z > 0.5 && p.x > ${F(X0)} && p.x < ${F(X1)}) {
@@ -50,9 +50,14 @@ void extraShade(vec3 p, inout vec3 n, out vec3 alb, inout vec3 emit, inout float
       float sx = texture(uTextShade, uv + vec2(sp.x, 0.0)).a - texture(uTextShade, uv - vec2(sp.x, 0.0)).a;
       float sy = texture(uTextShade, uv + vec2(0.0, sp.y)).a - texture(uTextShade, uv - vec2(0.0, sp.y)).a;
       n = normalize(n - vec3(sx, -sy, 0.0) * 3.0 * (1.0 - tx.a));
-      float fill = tx.a > 0.01 ? tx.r / tx.a : 0.0;
-      alb = mix(alb, mix(alb * 0.5, vec3(0.012, 0.01, 0.009), fill), tx.a);
-      gloss = max(gloss, tx.a * fill * 0.5);
+      // the words burn in the brick like the kiln's own fire: the canvas red is the heat, white-hot
+      // as a word is struck, settling to a deep living ember with cracks of brighter fire through it
+      float heat = tx.a > 0.01 ? tx.r / tx.a : 0.0;
+      float crack = smoothstep(0.45, 0.8, fbm(vec2(p.x * 26.0, p.y * 26.0) + vec2(0.0, -uTime * 0.6), 4));
+      float flick = 0.8 + 0.2 * sin(uTime * 7.0 + p.x * 3.0) * sin(uTime * 4.3 + p.y * 9.0);
+      alb = mix(alb, vec3(0.03, 0.02, 0.015), tx.a);
+      vec3 fire = mix(vec3(0.75, 0.07, 0.005), vec3(1.0, 0.38, 0.05), heat) + vec3(0.5, 0.4, 0.25) * smoothstep(0.85, 1.0, heat);
+      emit += fire * tx.a * (0.7 + 2.6 * heat * heat) * (0.55 + 0.9 * crack) * flick;
     }
   }
 }
@@ -96,7 +101,7 @@ export default (P) => {
     textSize: [W, H],
     extra: EXTRA,
     sky: () => ({ ...skyMix('twilight', 'night', 0.75), uFogDen: 0.0005, uFogCol: [0.04, 0.04, 0.06] }),
-    uniforms: { uFires: 1.0, uCloudY: 112, uCloudDen: 0.7, uPlainFires: 1.0, uWindT: 0.3, uPtFire: [3.2, 0.15, ZF + 2.6, 1.0], uWallB: [0, 0, 0, 0] },
+    uniforms: { uFires: 1.0, uCloudY: 112, uCloudDen: 0.7, uPlainFires: 1.0, uWindT: 0.3, uPtFire: [3.2, 0.15, ZF + 2.6, 0.35], uWallB: [0, 0, 0, 0] },
     update(t, u) {
       const w = laid(t);
       u.uWallB.value[0] = w.full; u.uWallB.value[1] = w.top; u.uWallB.value[2] = w.x;
@@ -108,13 +113,17 @@ export default (P) => {
         if (g.a <= 0.001) return;
         const cur = L.findIndex((l) => t < l.end + 0.4);
         const age = cur < 0 ? 0 : cur - k;
-        ctx.globalAlpha = g.a * (age >= 2 ? 0.45 : 1);
-        ctx.fillStyle = `rgb(${Math.round(clamp01((t - r.w.start - 0.1) / 0.4) * (age >= 2 ? 90 : 255))},0,0)`;
+        // heat: white-hot as the word is struck, cooling over a few seconds to a steady ember; the
+        // older lines lower down keep only a dull glow
+        const since = t - r.w.start;
+        const heat = since < 0.15 ? 1 : 0.42 + 0.58 * Math.exp(-(since - 0.15) / 1.6);
+        ctx.globalAlpha = g.a;
+        ctx.fillStyle = `rgb(${Math.round(255 * (age >= 2 ? 0.3 : heat))},0,0)`;
         ctx.fillText(r.w.w, r.x0, SH * k + SH * 0.52);
       }));
       ctx.globalAlpha = 1;
     },
-    post: () => grade({ exposure: 1.15, bloom: 0.16 }),
+    post: () => grade({ exposure: 1.0, bloom: 0.2 }),
     finish: () => FINISH,
   });
 };

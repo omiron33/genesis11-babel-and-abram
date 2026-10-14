@@ -1,13 +1,13 @@
 // s06-came-down: the silence, then "And the LORD came down / to see the city / and the tower / the
 // children of men had built"
-// Night on the plain, low among the drying bricks. Far off the tower stands under a vast dark cloud,
-// its terrace fires climbing it. The music stops. A column of light comes down through the cloud onto
-// the tower, touches the ground, and its light runs out across the plain toward us, slowing as it
+// Evening on the plain, low among the drying bricks, the sky heavy with cloud. Far off the tower stands
+// under a vast dark cloud, its terrace fires climbing it. The music stops. A great column of light comes down through the cloud onto
+// the tower and the whole sky takes its light, every cloud lit through; it touches the ground, and its light runs out across the plain toward us, slowing as it
 // reaches the field of bricks: each line is stamped in a row of bricks there, always there in the dark,
 // and is seen only as the light reaches it, the farthest row first.
 import lyrics from '/timing.js';
 import { track } from '/song/lib/cam.js';
-import { plainScene, TOWER_AT } from '/song/lib/x-plain.js';
+import { plainScene, TOWER_AT } from '/song/lib/x-plain-wet.js';
 import { skyMix, grade, FINISH, smooth, clamp01 } from '/song/lib/look.js';
 import { anchorAt, inscribe, region } from '/song/lib/type.js';
 export const kind = 'shader';
@@ -43,26 +43,28 @@ export default (P) => {
   return plainScene(P, {
     name: 's06-came-down', cam,
     textSize: [4096, Math.round(4096 * (2 * HD) / (2 * HWID)) * 4],
-    sky: () => ({ ...skyMix('night', 'twilight', 0.05), uMoon: 0.0, uStars: 0.4, uAmb: [0.012, 0.013, 0.02], uSunCol: [0.08, 0.09, 0.14], uFogDen: 0.0012, uFogCol: [0.02, 0.02, 0.03] }),
+    sky: () => ({ ...skyMix('dusk', 'twilight', 0.7), uSunDir: [-0.5, -0.04, 0.86], uCloud: 0.7, uMoon: 0.0, uMoonDir: [0, -1, 0], uStars: 0.0, uAmb: [0.02, 0.019, 0.026], uFogDen: 0.0011, uFogCol: [0.06, 0.05, 0.06] }),
     uniforms: {
       uDecal: decal, uDecalUV: decalUV, uDecalKind: [2, 2, 2, 2],
-      uTower: [T[0], T[1], 1, 1.0], uStorm: 1.0, uWind: 0.15, uBricks: 1,
+      uTower: [T[0], T[1], 1, 1.0], uStorm: 0.0, uWind: 0.15, uBricks: 1,
       uKiln: new Array(12).fill(0),
-      uLight: [T[0], T[1], 45, 0], uPool: [T[0], T[1], 0, 1],
+      uLight: [T[0], T[1], 85, 0], uReeds: 1, uGlory: 0, uPool: [T[0], T[1], 0, 1],
     },
     update(t, u) {
       // the column comes down out of the cloud over three seconds before it touches the ground
       const down = smooth(clamp01((t - (TD - 3.2)) / 3.2));
-      u.uLight.value[3] = 2.2 * smooth(clamp01((t - (TD - 3.4)) / 1.0));
+      u.uLight.value[3] = 3.2 * smooth(clamp01((t - (TD - 3.4)) / 1.0));
+      // as it touches the ground the whole sky takes its light, every cloud lit through
+      u.uGlory.value = smooth(clamp01((t - (TD - 0.4)) / 2.5));
       u.uColBottom.value = 420 * (1 - down);
       const r = R(t);
       u.uPool.value[2] = r;
       u.uPool.value[3] = r < dist(ZK[0]) - 300 ? 120 : 1.5;
     },
-    drawText(ctx) {
-      // the words are always there in the dust; only the light shows them
+    drawText(ctx, t) {
+      // each line is pressed into the dust as it is sung, where the light has just reached
       L.forEach((l, k) => region(ctx, [0, 1 - (k + 1) / 4, 1, 1 - k / 4], 2 * HWID, 2 * HD, (c, b) =>
-        inscribe(c, 1e9, [{ words: l.words }], { x: 50, y: 0, w: b.w - 100, h: b.h }, { size: Math.round(b.h * 0.72), valign: 'middle', font: 'name' })));
+        inscribe(c, t, [{ words: l.words }], { x: 50, y: 0, w: b.w - 100, h: b.h }, { size: Math.round(b.h * 0.72), valign: 'middle', font: 'name' })));
     },
     post: () => grade({ exposure: 1.25, bloom: 0.2 }),
     finish: () => FINISH,
